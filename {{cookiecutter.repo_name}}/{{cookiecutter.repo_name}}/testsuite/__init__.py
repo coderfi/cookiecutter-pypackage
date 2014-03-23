@@ -211,7 +211,6 @@ def main():
     try:
         unittest.main(testLoader=BetterLoader(), defaultTest='suite')
     except Exception:
-        import sys
         import traceback
         traceback.print_exc()
         sys.exit(1)

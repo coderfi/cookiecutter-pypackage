@@ -32,7 +32,7 @@ class Package_Metadata(dict):
                                % (attr, _package_file,))
 
     def refresh(self, attributes):
-        f = open(self.package_file, "rU")
+        f = open(self.package_file, "rt")
         try:
             file_content = f.read()
         finally:
@@ -50,7 +50,6 @@ class Package_Metadata(dict):
         self.package_file = package_file
 
         self.refresh(self.attributes)
-
 
 p = Package_Metadata(_package_file)
 
