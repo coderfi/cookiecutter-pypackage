@@ -8,8 +8,8 @@ import os
 import sys
 import re
 
-package_file = os.path.join(os.path.dirname(__file__), "{{ cookiecutter.repo_name }}/__init__.py")
-file_content = open(package_file, "rt").read()
+_package_file = os.path.join(os.path.dirname(__file__),
+                            "{{ cookiecutter.repo_name }}/__init__.py")
 
 
 class Package_Metadata(dict):
@@ -22,17 +22,21 @@ class Package_Metadata(dict):
     ]
 
     @staticmethod
-    def get_attribute(attr, file_content):
+    def get_attribute(attr, file_content,):
         regex_expression = r"^__{0}__ = ['\"]([^'\"]*)['\"]".format(attr)
         mo = re.search(regex_expression, file_content, re.M)
         if mo:
             return mo.group(1)
         else:
-            raise RuntimeError("Unable to find version string in %s." % (package_file,))
+            raise RuntimeError("Unable to find __%s__ string in %s."
+                               % (attr, _package_file,))
 
     def refresh(self, attributes):
-
-        file_content = open(self.package_file, "rt").read()
+        f = open(self.package_file, "rU")
+        try:
+            file_content = f.read()
+        finally:
+            f.close()
 
         for k in attributes:
             attr_val = self.get_attribute(k, file_content)
@@ -40,7 +44,6 @@ class Package_Metadata(dict):
                 self[k] = attr_val
 
     def __init__(self, package_file, attributes=None):
-
         if attributes:
             self.attributes = attributes
 
@@ -49,7 +52,7 @@ class Package_Metadata(dict):
         self.refresh(self.attributes)
 
 
-p = Package_Metadata(package_file)
+p = Package_Metadata(_package_file)
 
 
 def print_metadata():
