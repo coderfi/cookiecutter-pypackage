@@ -34,7 +34,7 @@ readme = open('README.rst').read()
 history = open('CHANGES').read().replace('.. :changelog:', '')
 
 setup(
-    name=p.title,
+    name=p.package_name,
     version=p.version,
     description=p.description,
     long_description=readme + '\n\n' + history,
